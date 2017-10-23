@@ -4,7 +4,8 @@
     <div class="container">
         <ul class="tool" >
             <li><a href="{{ url_for("stock.get_kchart") }}">获取k线图</a></li>
-            <li><a href="{{ url_for("stock.get_longhu_new") }}">获取龙虎榜</a></li>
+            <li><a href="{{ url_for("stock.get_longhu") }}">获取龙虎榜</a></li>
+            <li><a href="{{ url_for("stock.get_lasheng") }}">获取尾盘拉升</a></li>
         </ul>
     </div>
 {% endblock page_body %}

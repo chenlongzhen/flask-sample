@@ -1,0 +1,109 @@
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.js"></script>
+</head>
+
+<body>
+
+
+<form action="" method="post" onSubmit="return initTable()">
+    <!--
+    <input name="getDate" type="text" />
+    -->
+    <input type="submit" />
+    <table class="table table-hover" id="myTable">
+    </table>
+</form>
+</body>
+
+
+<script type="text/javascript">
+
+      function initTable() {
+          console.log("in initTable!");
+          var $SCRIPT_ROOT = {{request.script_root|tojson|safe}};
+
+          $.ajax({
+              type: "POST",
+              url: $SCRIPT_ROOT,
+              data: {
+                 // "getDate": $("input[name=getDate]").val()
+              },
+              success: function (result) {
+                  console.log(result);
+                  var dataJson = eval('(' + result['lasheng'] + ')');
+                  //console.log(dataJson);
+                  //console.log(result['longhu']);
+
+                  $('#myTable').bootstrapTable('destroy').bootstrapTable({
+
+                      data: dataJson,
+                      dataType: 'json',
+                      data_locale: "zh-US",    //转换中文 但是没有什么用处
+                      pagination: true,
+                      pageList: [],
+                      pageNumber: 1,
+                      pageSize: 25,//每页显示的数量
+                      paginationPreText: "上一页",
+                      paginationNextText: "下一页",
+                      paginationLoop: false,
+                      sortName:'stockname', //sort
+                      sortOrder: "desc",
+                      //这里也可以将TABLE样式中的<tr>标签里的内容挪到这里面：
+                      columns: [{
+                          checkbox: true
+                      },
+                          {
+                              field: 'stockname',
+                              title: 'stockname',
+                              valign: 'middle'
+                          },
+                          {
+                              field: 'stockid',
+                              title: 'stockid'
+                          },
+                          {
+                              field: 'stockdate',
+                              title: 'stockdate'
+                          },
+                          {
+                              field: 'iflasheng',
+                              title: 'iflasheng'
+                          }
+
+                      ],
+                      silent: true, //刷新事件必须设置
+                      formatLoadingMessage: function () {
+                          return "请稍等，正在加载中...";
+                      },
+                      formatNoMatches: function () { //没有匹配的结果
+                          return '无符合条件的记录';
+                      },
+                      onLoadError: function (data) {
+                          $('#myTable').bootstrapTable('removeAll');
+                      },
+                      onClickRow: function (row) {
+                          return True
+                      }
+                      , error: function (data) {
+                          Modal.confirm({title: '提示', msg: "刷新数据失败!"});
+                      }
+
+                  });
+
+                  //$('#ClickModal').modal('show');
+
+              }
+          });
+          return false;
+      }
+    </script>
+
+</html>

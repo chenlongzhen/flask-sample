@@ -1,4 +1,5 @@
 # coding=utf-8
+import datetime
 import tushare as ts
 import pandas as pd
 #top = ts.top_list('2017-06-12')
@@ -59,5 +60,23 @@ def getLonghuNew(getDate = "2017-10-13"):
     #dataList = data.values.tolist()
 
 
-
     return dataJsonRecord
+
+def getYesterday():
+
+    sign = True
+    print("[INFO] get yesterday...")
+    date = datetime.datetime.now()
+    yesterOneDay =  datetime.timedelta(days=-1)
+    while sign:
+        date += yesterOneDay
+        print date
+        print date.weekday()
+        if date.weekday() >= 5:
+            pass
+        else:
+            sign = False
+    dataStr = date.strftime("%Y-%m-%d")
+    print("[INFO] get date {}".format(dataStr))
+    return dataStr
+
