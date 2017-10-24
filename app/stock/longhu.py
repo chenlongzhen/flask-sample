@@ -28,7 +28,7 @@ def intoDB(date='2017-10-20'):
     except Exception as e:
         print("error: {}".format(e))
 
-def main():
+def longhuMain():
     date = getYesterday()
     intoDB(date)
 
@@ -55,12 +55,12 @@ def longHuGetMysqlForWeb():
     if check.shape[0] == 0 :
         # request yesterday
         print("[info] get request data {}".format(date))
-        main()
+        longhuMain()
 
     beforedate = datetime.datetime.strptime(date,"%Y-%m-%d") - datetime.timedelta(days=7)
-    sqlStr ="select code, name, pchange, amount, buy, sell,reason,bratio,sratio,date " \
+    sqlStr ="select code, name, pchange, amount, buy, sell,reason,bratio,sratio,date_format(date,'%Y-%c-%d') as sdate " \
             "from stock.longhu " \
-            "where date > '{}' and date <='{}'".format(beforedate,date)
+            "where date > '{}' and date <='{}' order by date desc ,pchange desc".format(beforedate,date)
     print(sqlStr)
 
     getData = pd.read_sql(sqlStr, con)

@@ -86,10 +86,7 @@ def intoDB(symbols):
         except Exception as e:
             print("[ERROR] {}".format(e))
 
-
-
-
-def main():
+def lashengMain():
     date = getYesterday()
     symbols = stockLasheng(date = date)
     intoDB(symbols)
@@ -117,16 +114,18 @@ def getMysqlForWeb():
     if check.shape[0] == 0 :
         # request yesterday
         print("[info] get request data {}".format(date))
-        main()
+        lashengMain()
 
     beforedate = datetime.datetime.strptime(date,"%Y-%m-%d") - datetime.timedelta(days=7)
-    sqlStr ="select stockname, stockid, stockdate, iflasheng " \
+    sqlStr ="select stockname, stockid, date_format(stockdate, '%Y-%c-%d') as sdate, iflasheng " \
             "from stock.lasheng " \
             "where stockdate > '{}' and stockdate <='{}'".format(beforedate,date)
     print(sqlStr)
 
     getData = pd.read_sql(sqlStr, con)
+    print getData
     dataJsonRecord = getData.to_json(orient="records")
+    print dataJsonRecord
 
     return dataJsonRecord
 

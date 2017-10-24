@@ -3,6 +3,7 @@ import datetime
 import tushare as ts
 import pandas as pd
 #top = ts.top_list('2017-06-12')
+
 def getStock(name='sh'):
     '''
     GET STOCK HIST DATA
@@ -54,26 +55,30 @@ def getLonghuNew(getDate = "2017-10-13"):
 
     dataJsonRecord = data.to_json(orient="records")
 
-
-
     #indexNameList = data.columns.values.tolist()
     #dataList = data.values.tolist()
-
 
     return dataJsonRecord
 
 def getYesterday():
 
+    '''
+    下午3点后取今天,3点前取昨天
+    :return: 
+    '''
     sign = True
     print("[INFO] get yesterday...")
     date = datetime.datetime.now()
     yesterOneDay =  datetime.timedelta(days=-1)
-    while sign:
+
+    if datetime.datetime.now().hour < 15:
         date += yesterOneDay
+
+    while sign:
         print date
         print date.weekday()
         if date.weekday() >= 5:
-            pass
+            date += yesterOneDay
         else:
             sign = False
     dataStr = date.strftime("%Y-%m-%d")
