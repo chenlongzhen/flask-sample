@@ -8,7 +8,7 @@ from markdown import markdown
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+    name = db.Column(db.Text)
     users = db.relationship('User', backref='role')
 
     #静态方法
@@ -21,15 +21,15 @@ class Role(db.Model):
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    email = db.Column(db.String)
-    password = db.Column(db.String)
+    name = db.Column(db.Text)
+    email = db.Column(db.Text)
+    password = db.Column(db.Text)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     posts = db.relationship('Post', backref='author')
     comments = db.relationship('Comment', backref='author')
 
-    locale = db.Column(db.String, default='zh')
+    locale = db.Column(db.Text, default='zh')
 
     # 触发器
     @staticmethod
@@ -62,9 +62,9 @@ db.event.listen(User.name, 'set', User.on_created)
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String)
-    body = db.Column(db.String)
-    body_html = db.Column(db.String)
+    title = db.Column(db.Text)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
     created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     comments = db.relationship('Comment', backref='post')
@@ -84,7 +84,7 @@ db.event.listen(Post.body, 'set', Post.on_body_changed)
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String)
+    body = db.Column(db.Text)
     created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))

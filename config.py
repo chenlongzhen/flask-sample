@@ -32,8 +32,9 @@ class TestingConfig(Config):
 class Production(Config):
 
     DEBUG=True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-                              'postgresql://clz:clz@127.0.0.1/clz?client_encoding=utf-8'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or 'mysql://clz:1@127.0.0.1/user'
+                              #'postgresql://clz:clz@127.0.0.1/clz?client_encoding=utf-8'
+                               #'mysql://clz:clz@127.0.0.1/clz?client_encoding=utf-8'
                               #'postgresql://clz:clz@localhost/clz'
     #                          'postgresql://ray:?@localhost/blog-db'
 
