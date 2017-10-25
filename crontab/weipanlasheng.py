@@ -66,7 +66,7 @@ def intoDB(symbols):
     db_name = 'stock'
 
     con = mdb.connect(
-        host=db_host, user=db_user, passwd=db_pass, db=db_name
+        host=db_host, user=db_user, passwd=db_pass, db=db_name,charset='utf8'
     )
 
     # Create the insert strings
@@ -103,7 +103,7 @@ def lashengCrontab():
     db_name = 'stock'
 
     con = mdb.connect(
-        host=db_host, user=db_user, passwd=db_pass, db=db_name
+        host=db_host, user=db_user, passwd=db_pass, db=db_name,charset='utf8'
     )
 
     date = getYesterday()

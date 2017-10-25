@@ -13,15 +13,14 @@ from app.stock.utils import getYesterday
 def intoDB(date='2017-10-20'):
     '''
     Insert symbols to Mysql
-    '''
-
+    ''' 
     print("[info] getting {}".format(date))
     data = ts.top_list(date)
     data['date'] = date
     data = data.drop_duplicates(['code','date'])
 
     print("[info] into mysql")
-    engine = create_engine('mysql://clz:1@127.0.0.1/stock?charset=utf8')
+    engine = create_engine('mysql://clz:1@127.0.0.1/stock?charset=utf8', encoding='utf-8')
 
     try:
         data.to_sql('longhu', engine, if_exists = "append", index=False)
@@ -45,7 +44,7 @@ def longHuGetMysqlForWeb():
     db_name = 'stock'
 
     con = mdb.connect(
-        host=db_host, user=db_user, passwd=db_pass, db=db_name
+        host=db_host, user=db_user, passwd=db_pass, db=db_name,charset="utf8"
     )
 
     date = getYesterday()
@@ -66,6 +65,7 @@ def longHuGetMysqlForWeb():
     print(sqlStr)
 
     getData = pd.read_sql(sqlStr, con)
+    #print(getData) 
     dataJsonRecord = getData.to_json(orient="records")
     #print dataJsonRecord
     return dataJsonRecord

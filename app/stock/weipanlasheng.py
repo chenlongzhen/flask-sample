@@ -67,7 +67,7 @@ def intoDB(symbols):
     db_name = 'stock'
 
     con = mdb.connect(
-        host=db_host, user=db_user, passwd=db_pass, db=db_name
+        host=db_host, user=db_user, passwd=db_pass, db=db_name, charset="utf-8"
     )
 
     # Create the insert strings
@@ -104,7 +104,7 @@ def getMysqlForWeb():
     db_name = 'stock'
 
     con = mdb.connect(
-        host=db_host, user=db_user, passwd=db_pass, db=db_name
+        host=db_host, user=db_user, passwd=db_pass, db=db_name,charset='utf8'
     )
 
     date = getYesterday()
@@ -125,9 +125,9 @@ def getMysqlForWeb():
     print(sqlStr)
 
     getData = pd.read_sql(sqlStr, con)
-    print getData
+    #print getData
     dataJsonRecord = getData.to_json(orient="records")
-    print dataJsonRecord
+    #print dataJsonRecord
 
     return dataJsonRecord
 

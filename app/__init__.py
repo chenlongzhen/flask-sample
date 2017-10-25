@@ -49,8 +49,9 @@ def create_app(config_name='default'):
     @babel.localeselector
     def get_locale():
         return current_user.locale
-
     return app
+
+
 
 # @app.route('/upload', methods=['GET', 'POST'])
 # def upload():
