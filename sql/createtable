@@ -1,0 +1,25 @@
+
+
+CREATE TABLE `lasheng` (
+  `stockname` varchar(8) DEFAULT NULL,
+  `stockid` varchar(8) NOT NULL DEFAULT '',
+  `stockdate` datetime NOT NULL ,
+  `iflasheng` varchar(8) DEFAULT NULL,
+  PRIMARY KEY (`stockid`,`stockdate`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE `longhu` (
+  `code` varchar(8) NOT NULL,
+  `name` varchar(8) NOT NULL,
+  `pchange` varchar(8) NOT NULL,
+  `amount` varchar(8) NOT NULL,
+  `buy` varchar(8) NOT NULL,
+  `sell` varchar(8) NOT NULL,
+  `reason` varchar(80) NOT NULL,
+  `bratio` varchar(8) NOT NULL,
+  `sratio` varchar(8) NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`code`,`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

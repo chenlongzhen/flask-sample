@@ -6,8 +6,7 @@ import datetime
 import MySQLdb as mdb
 from sqlalchemy import create_engine
 import pandas as pd
-
-from app.stock.utils import getYesterday
+from utils import *
 
 
 def intoDB(date='2017-10-20'):
@@ -28,12 +27,13 @@ def intoDB(date='2017-10-20'):
     except Exception as e:
         print("error: {}".format(e))
 
+
 def longhuMain():
     date = getYesterday()
     intoDB(date)
 
 
-def longHuGetMysqlForWeb():
+def longHuIntoMysql():
     '''
     get data from mysql
     :param date: 
@@ -49,26 +49,17 @@ def longHuGetMysqlForWeb():
     )
 
     date = getYesterday()
+    sqlStr ="select 1 from stock.longhu where " \
+            "date ='{}'".format(date)
+    check = pd.read_sql(sqlStr, con)
+    if check.shape[0] == 0 :
+        # request yesterday
+        print("[info] get request data {}".format(date))
+        longhuMain()
+    else:
+        print("[info] {} already in mysql".format(date))
 
-#    check and getdata
-#    sqlStr ="select 1 from stock.longhu where " \
-#            "date ='{}'".format(date)
-#    check = pd.read_sql(sqlStr, con)
-#    if check.shape[0] == 0 :
-#        # request yesterday
-#        print("[info] get request data {}".format(date))
-#        longhuMain()
 
-    beforedate = datetime.datetime.strptime(date,"%Y-%m-%d") - datetime.timedelta(days=7)
-    sqlStr ="select code, name, pchange, amount, buy, sell,reason,bratio,sratio,date_format(date,'%Y-%c-%d') as sdate " \
-            "from stock.longhu " \
-            "where date > '{}' and date <='{}' order by date desc ,pchange desc".format(beforedate,date)
-    print(sqlStr)
-
-    getData = pd.read_sql(sqlStr, con)
-    dataJsonRecord = getData.to_json(orient="records")
-    #print dataJsonRecord
-    return dataJsonRecord
 
 if __name__ == "__main__":
-    longHuGetMysqlForWeb()
+    longHuIntoMysql()

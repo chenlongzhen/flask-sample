@@ -5,8 +5,7 @@ import tushare as ts
 import datetime
 import MySQLdb as mdb
 import pandas as pd
-
-from app.stock.utils import getYesterday
+from utils import *
 
 
 def _ifLasheng(stockid='000001', date='2017-10-15'):
@@ -92,7 +91,7 @@ def lashengMain():
     intoDB(symbols)
 
 
-def getMysqlForWeb():
+def lashengCrontab():
     '''
     get data from mysql
     :param date: 
@@ -108,28 +107,16 @@ def getMysqlForWeb():
     )
 
     date = getYesterday()
+    sqlStr ="select 1 from stock.lasheng where " \
+            "stockdate ='{}'".format(date)
+    check = pd.read_sql(sqlStr, con)
+    if check.shape[0] == 0 :
+        # request yesterday
+        print("[info] get request data {}".format(date))
+        lashengMain()
+    else:
+        print("[info] {} already in mysql".format(date))
 
-#    check and get into mysql mv to crontab
-#    sqlStr ="select 1 from stock.lasheng where " \
-#            "stockdate ='{}'".format(date)
-#    check = pd.read_sql(sqlStr, con)
-#    if check.shape[0] == 0 :
-#        # request yesterday
-#        print("[info] get request data {}".format(date))
-#        lashengMain()
-
-    beforedate = datetime.datetime.strptime(date,"%Y-%m-%d") - datetime.timedelta(days=7)
-    sqlStr ="select stockname, stockid, date_format(stockdate, '%Y-%c-%d') as sdate, iflasheng " \
-            "from stock.lasheng " \
-            "where stockdate > '{}' and stockdate <='{}'".format(beforedate,date)
-    print(sqlStr)
-
-    getData = pd.read_sql(sqlStr, con)
-    print getData
-    dataJsonRecord = getData.to_json(orient="records")
-    print dataJsonRecord
-
-    return dataJsonRecord
 
 if __name__ == "__main__":
-    getMysqlForWeb()
+    lashengCrontab()
