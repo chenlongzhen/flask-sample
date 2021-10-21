@@ -1,5 +1,5 @@
 alembic==0.8.1
-Babel==2.0
+Babel==2.9.1
 backports.ssl-match-hostname==3.4.0.2
 beautifulsoup4==4.6.0
 bs4==0.0.1
