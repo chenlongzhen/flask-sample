@@ -3,7 +3,7 @@ Babel==2.0
 backports.ssl-match-hostname==3.4.0.2
 beautifulsoup4==4.6.0
 bs4==0.0.1
-certifi==2017.7.27.1
+certifi==2022.12.7
 chardet==3.0.4
 dominate==2.1.12
 Flask==0.10.1
